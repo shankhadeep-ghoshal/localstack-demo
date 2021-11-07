@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<ruleset name="DevFactory"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+  http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+  <description>
+    PMD Rules Configuration
+  </description>
+
+  <exclude-pattern>.*Mock\.java</exclude-pattern>
+
+  <rule ref="category/java/bestpractices.xml">
+    <exclude name="GuardLogStatement"/>
+    <exclude name="JUnitTestContainsTooManyAsserts"/>
+    <exclude name="AvoidPrintStackTrace"/>
+    <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+    <exclude name="JUnitTestsShouldIncludeAssert"/>
+    <exclude name="SystemPrintln"/>
+  </rule>
+
+  <rule ref="category/java/codestyle.xml">
+    <exclude name="DefaultPackage"/>
+    <exclude name="OnlyOneReturn"/>
+    <exclude name="ConfusingTernary"/>
+    <exclude name="AbstractNaming"/>
+    <exclude name="FieldNamingConventions"/>
+    <exclude name="AtLeastOneConstructor"/>
+    <exclude name="AvoidFinalLocalVariable"/>
+    <exclude name="MethodArgumentCouldBeFinal"/>
+    <exclude name="LocalVariableCouldBeFinal"/>
+    <exclude name="CommentDefaultAccessModifier"/>
+    <exclude name="TooManyStaticImports"/>
+  </rule>
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions">
+    <properties>
+      <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]*"/>
+    </properties>
+  </rule>
+  <rule ref="category/java/codestyle.xml/ShortVariable">
+    <properties>
+      <property name="minimum" value="2"/>
+    </properties>
+  </rule>
+  <rule ref="category/java/codestyle.xml/LongVariable">
+    <properties>
+      <property name="minimum" value="64"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/errorprone.xml"/>
+  <rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
+    <properties>
+      <property name="separator" value="," />
+      <property name="maxDuplicateLiterals" value="2" />
+      <property name="minimumLength" value="3" />
+      <property name="skipAnnotations" value="false" />
+      <property name="exceptionList" value="" />
+    </properties>
+  </rule>
+
+  <rule ref="category/java/errorprone.xml/BeanMembersShouldSerialize">
+    <properties>
+      <property name="ignoredAnnotations" value="lombok.Data|lombok.Getter|lombok.Value"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/multithreading.xml">
+    <exclude name="AvoidUsingVolatile"/>
+    <exclude name="UseConcurrentHashMap"/>
+  </rule>
+
+  <rule ref="category/java/performance.xml">
+    <exclude name="UseStringBufferForStringAppends"/>
+  </rule>
+
+  <rule ref="category/java/design.xml">
+    <exclude name="LawOfDemeter"/>
+    <exclude name="ExcessiveImports"/>
+    <exclude name="LoosePackageCoupling"/>
+    <exclude name="UseUtilityClass"/>
+  </rule>
+  <rule ref="category/java/design.xml/ExcessiveMethodLength">
+    <properties>
+      <property name="minimum" value="40.0"/>
+    </properties>
+  </rule>
+  <rule ref="category/java/design.xml/TooManyMethods">
+    <properties>
+      <property name="maxmethods" value="10"/>
+    </properties>
+  </rule>
+  <rule ref="category/java/design.xml/SignatureDeclareThrowsException">
+    <properties>
+      <property name="IgnoreJUnitCompletely" value="true"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/security.xml"/>
+
+  <rule ref="category/java/documentation.xml">
+    <exclude name="CommentRequired"/>
+  </rule>
+  <rule ref="category/java/documentation.xml/CommentSize">
+    <properties>
+      <property name="maxLines" value="30"/>
+      <property name="maxLineLength" value="120"/>
+    </properties>
+  </rule>
+
+</ruleset>

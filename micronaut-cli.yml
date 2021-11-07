@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.shankhadeepghoshal.chatapp
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [annotation-api, app-name, aws-v2-sdk, gradle, hibernate-validator, http-client, java, java-application, junit, logback, lombok, management, micrometer, micrometer-cloudwatch, mockito, netty-server, openapi, readme, redis-lettuce, rxjava3, rxjava3-http-client, shade, yaml]

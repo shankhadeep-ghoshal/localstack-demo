@@ -1,0 +1,119 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("io.micronaut.application") version "2.0.8"
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id "com.diffplug.spotless" version "5.17.0"
+    id 'idea' // in case you use Intelli-J IDEA
+}
+
+apply from: "${rootDir}/gradle/static-code-analysis.gradle"
+
+version = "1.0"
+group = "com.shankhadeepghoshal.chatapp"
+
+repositories {
+    mavenCentral()
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.shankhadeepghoshal.chatapp.*")
+    }
+}
+
+ext {
+    lombokVersion = "1.18.22"
+    micronautVersion = "3.1.3"
+    openApiVersion = "3.1.0"
+    swaggerAnnotationsVersion = "2.1.11"
+    mockitoCoreVersion = "4.0.0"
+    awsV2SdkVersion = "3.0.4"
+    hibernateValidator = "3.0.0"
+    lettuceVersion = "5.0.0"
+    rxjava3Version = "2.0.0"
+    javaxAnnotationApiVersoin = "1.3.2"
+    logbackClassicVersion = "1.2.6"
+}
+
+dependencies {
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "io.micronaut:micronaut-http-validation:${micronautVersion}"
+    annotationProcessor "io.micronaut.openapi:micronaut-openapi:${openApiVersion}"
+    implementation "io.micronaut:micronaut-http-client:${micronautVersion}"
+    implementation "io.micronaut:micronaut-management:${micronautVersion}"
+    implementation "io.micronaut:micronaut-runtime:${micronautVersion}"
+    implementation "io.micronaut.aws:micronaut-aws-sdk-v2:${awsV2SdkVersion}"
+    implementation "io.micronaut.beanvalidation:micronaut-hibernate-validator:${hibernateValidator}"
+/*    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-cloudwatch")*/
+    implementation "io.micronaut.redis:micronaut-redis-lettuce:${lettuceVersion}"
+    implementation "io.micronaut.rxjava3:micronaut-rxjava3:${rxjava3Version}"
+    implementation "io.micronaut.rxjava3:micronaut-rxjava3-http-client:${rxjava3Version}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
+    implementation "javax.annotation:javax.annotation-api:${javaxAnnotationApiVersoin}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    runtimeOnly "ch.qos.logback:logback-classic:${logbackClassicVersion}"
+    implementation "io.micronaut:micronaut-validation:${micronautVersion}"
+
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+}
+
+application {
+    mainClass.set("com.shankhadeepghoshal.chatapp.Application")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+spotless {
+    // ratchetFrom 'origin/master'
+    java {
+        importOrder('java', 'javax', 'io.ekyamcollaboration.backend', '')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        indentWithTabs(2)
+        endWithNewline()
+        googleJavaFormat('1.11.0')
+                .aosp()
+                .reflowLongStrings()
+                .groupArtifact('com.google.googlejavaformat:google-java-format')
+    }
+}
+
+run {
+    jvmArgs = ['-Dspring.profiles.active=local',
+               '-XX:+UnlockDiagnosticVMOptions',
+               '-Xlog:gc+ergo',
+               '-Xlog:gc+stats',
+               '-XX:+AlwaysPreTouch',
+               '-Xmx1g', '-Xms1g',
+               '-XX:+UseNUMA',
+               '-XX:-UseBiasedLocking',
+               '-XX:+DisableExplicitGC',
+               '-XX:ShenandoahGCMode=normal/satb',
+               '-XX:+ShenandoahVerify',
+               '-XX:+HeapDumpOnOutOfMemoryError',
+               '-XX:HeapDumpPath=heapdump.hprof',
+               '-XX:StartFlightRecording=disk=true' +
+                       ',dumponexit=true' +
+                       ',filename=recording.jfr,' +
+                       'maxsize=1024m' +
+                       ',maxage=1d' +
+                       ',settings=profile' +
+                       ',path-to-gc-roots=true',
+               '-Xverify:all']
+}
+

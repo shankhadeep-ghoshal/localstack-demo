@@ -1,0 +1,9 @@
+micronaut:
+  application:
+    name: messageroutingservice
+  metrics:
+    enabled: true
+    export:
+      cloudwatch:
+        enabled: true
+redis.uri: redis://localhost

@@ -1,0 +1,22 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    apply plugin: 'pmd'
+
+   pmd {
+        toolVersion = "6.39.0"
+        ignoreFailures = false
+        ruleSetFiles = files("${rootDir}/pmd-ruleset.xml")
+        ruleSets = []
+        rulesMinimumPriority = 3
+    }
+
+    tasks.withType(Pmd) {
+        reports {
+            xml.enabled(false)
+            html.enabled(true)
+        }
+    }
+}
