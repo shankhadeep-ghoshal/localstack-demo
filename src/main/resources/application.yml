@@ -6,4 +6,9 @@ micronaut:
     export:
       cloudwatch:
         enabled: true
+  server:
+    port: 8085
+
 redis.uri: redis://localhost
+
+sqs.message-queue-name: message_queue
