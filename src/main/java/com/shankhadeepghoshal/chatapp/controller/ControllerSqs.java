@@ -1,6 +1,5 @@
 package com.shankhadeepghoshal.chatapp.controller;
 
-import com.shankhadeepghoshal.chatapp.configs.SqsMessageReceiver;
 import com.shankhadeepghoshal.chatapp.configs.SqsMessageSender;
 import com.shankhadeepghoshal.chatapp.model.MessageStruct;
 import io.micronaut.http.MediaType;
@@ -18,12 +17,9 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ControllerSqs {
     SqsMessageSender messageSender;
-    SqsMessageReceiver messageReceiver;
 
     @Post(consumes = MediaType.APPLICATION_JSON)
-    public Single<Class<Void>> sendMessage(@Body MessageStruct message) {
-        messageSender.sendMessage(message);
-        messageReceiver.startReceivingMessage();
-        return Single.just(Void.TYPE);
+    public Single<Integer> sendMessage(@Body MessageStruct message) {
+        return messageSender.sendMessage(message);
     }
 }
