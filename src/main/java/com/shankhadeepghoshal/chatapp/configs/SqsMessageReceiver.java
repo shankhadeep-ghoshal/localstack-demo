@@ -53,7 +53,7 @@ public class SqsMessageReceiver {
             SqsAsyncClient sqsAsyncClient,
             ObjectMapper objectMapper,
             @Named("forConsoleOut") ThreadPoolExecutor customThreadPool,
-            @Named("queueUrl") String queueUrl) {
+            @Named("queue_url") String queueUrl) {
         this.sqsAsyncClient = sqsAsyncClient;
         this.objectMapper = objectMapper;
         this.customThreadPool = customThreadPool;
@@ -103,7 +103,7 @@ public class SqsMessageReceiver {
                 .flatMap(Single::fromCompletionStage)
                 .map(ReceiveMessageResponse::messages)
                 .observeOn(Schedulers.from(customThreadPool, true, true))
-                .doOnSuccess(messages -> messages.forEach(this::deleteMessages))
+                //                .doOnSuccess(messages -> messages.forEach(this::deleteMessages))
                 .subscribe(
                         new SingleObserver<>() {
                             @Override

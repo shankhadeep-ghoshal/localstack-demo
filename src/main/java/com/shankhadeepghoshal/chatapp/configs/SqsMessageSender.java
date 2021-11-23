@@ -2,36 +2,40 @@ package com.shankhadeepghoshal.chatapp.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shankhadeepghoshal.chatapp.model.MessageStruct;
-import io.micronaut.context.annotation.Context;
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.Introspected;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
-@Context
+@Singleton
 @Introspected
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequiredArgsConstructor(onConstructor_ = {@Inject, @Creator})
 @Slf4j
 public class SqsMessageSender {
 
-    SqsAsyncClient sqsAsyncClient;
-    ObjectMapper objectMapper;
+    transient SqsAsyncClient sqsAsyncClient;
+    transient ObjectMapper objectMapper;
+    transient String queueUrl;
 
     @Inject
-    @Named("queueUrl")
-    @NonFinal
-    public String queueUrl;
+    @Creator
+    public SqsMessageSender(
+            SqsAsyncClient sqsAsyncClient,
+            ObjectMapper objectMapper,
+            @Named("queue_url") String queueUrl) {
+        this.sqsAsyncClient = sqsAsyncClient;
+        this.objectMapper = objectMapper;
+        this.queueUrl = queueUrl;
+    }
 
     @SneakyThrows
     public Single<Integer> sendMessage(final MessageStruct messageBody) {
